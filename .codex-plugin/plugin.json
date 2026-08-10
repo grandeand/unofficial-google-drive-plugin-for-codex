@@ -1,6 +1,6 @@
 {
   "name": "grande-google-drive",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Grande'nin Google Drive ve Google Sheets işlemleri için yerel MCP eklentisi.",
   "author": {
     "name": "Grande"

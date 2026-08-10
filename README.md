@@ -24,13 +24,21 @@ The wrapper uses these local paths by default:
 ~/.mcp-auth/google-drive-mcp-tokens.json
 ```
 
+The default is resolved from the real operating-system user home, even when
+Codex runs the plugin with an isolated profile `HOME`. If the token store is
+missing, the plugin automatically starts the upstream OAuth flow before the MCP
+server becomes ready and opens the browser.
+
 Override them with:
 
 ```text
 GOOGLE_DRIVE_OAUTH_CREDENTIALS
 GOOGLE_DRIVE_MCP_TOKEN_PATH
 GOOGLE_DRIVE_MCP_SCOPES
+GRANDE_GOOGLE_DRIVE_AUTH_HOME
 ```
+
+Set `GRANDE_GOOGLE_DRIVE_AUTO_AUTH=0` to disable automatic first-start OAuth.
 
 The plugin never includes credentials or tokens in the repository.
 
