@@ -15,6 +15,29 @@ This project is not affiliated with OpenAI, Google, or Piotr Agier.
 - Write actions remain approval-gated in Codex
 - Display titles added through standard MCP tool annotations
 
+## One-command installation
+
+Install the plugin globally for the current user, register it with the personal
+Codex marketplace, install all Node.js dependencies, and start Google OAuth:
+
+```bash
+npx --yes --package=github:grandeand/unofficial-google-drive-plugin-for-codex grande-google-drive-install
+```
+
+The installer copies the plugin to `~/.codex/plugins/grande-google-drive`, runs
+`npm install --omit=dev`, registers `grande-google-drive` with Codex, and then
+opens the browser for Google sign-in. Restart Codex after the installer
+completes so the new MCP server is loaded.
+
+The machine must have Node.js, npm, and the Codex CLI available on `PATH`.
+
+To run Google authentication again later:
+
+```bash
+cd ~/.codex/plugins/grande-google-drive
+npm run auth
+```
+
 ## OAuth files
 
 The wrapper uses these local paths by default:
@@ -46,10 +69,12 @@ The plugin never includes credentials or tokens in the repository.
 
 ```bash
 npm install
-node server/index.mjs
+npm run verify
 ```
 
-The wrapper starts `@piotr-agier/google-drive-mcp@2.5.0` through `npx`, forwards MCP requests, and adds `annotations.title` to the tools returned by `tools/list`.
+The wrapper uses its pinned local `@piotr-agier/google-drive-mcp@2.5.0`
+dependency, forwards MCP requests, and adds `annotations.title` to the tools
+returned by `tools/list`.
 
 ## Attribution
 

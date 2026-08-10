@@ -2,6 +2,7 @@
 
 import os from "node:os";
 import path from "node:path";
+import { fileURLToPath } from "node:url";
 import { access, readFile } from "node:fs/promises";
 import { constants } from "node:fs";
 import { spawn } from "node:child_process";
@@ -15,9 +16,17 @@ import {
   ListToolsRequestSchema,
 } from "@modelcontextprotocol/sdk/types.js";
 
-const upstreamPackage =
-  process.env.GRANDE_GOOGLE_DRIVE_UPSTREAM_PACKAGE ??
-  "@piotr-agier/google-drive-mcp@2.5.0";
+const packageRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const upstreamEntry =
+  process.env.GRANDE_GOOGLE_DRIVE_UPSTREAM_ENTRY ??
+  path.join(
+    packageRoot,
+    "node_modules",
+    "@piotr-agier",
+    "google-drive-mcp",
+    "dist",
+    "index.js",
+  );
 
 const authHome =
   process.env.GRANDE_GOOGLE_DRIVE_AUTH_HOME ??
@@ -36,8 +45,8 @@ const upstreamEnv = {
 };
 
 const upstreamTransport = new StdioClientTransport({
-  command: "npx",
-  args: ["-y", upstreamPackage],
+  command: process.execPath,
+  args: [upstreamEntry],
   env: upstreamEnv,
   stderr: "inherit",
 });
@@ -85,8 +94,8 @@ async function ensureGoogleOAuth() {
   );
 
   const child = spawn(
-    "npx",
-    ["-y", upstreamPackage, "auth"],
+    process.execPath,
+    [upstreamEntry, "auth"],
     {
       env: upstreamEnv,
       stdio: "inherit",

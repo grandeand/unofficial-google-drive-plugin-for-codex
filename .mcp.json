@@ -4,7 +4,8 @@
       "command": "npx",
       "args": [
         "-y",
-        "github:grandeand/unofficial-google-drive-plugin-for-codex"
+        "--package=github:grandeand/unofficial-google-drive-plugin-for-codex",
+        "grande-google-drive"
       ],
       "default_tools_approval_mode": "writes"
     }
