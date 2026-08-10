@@ -9,7 +9,7 @@ import { fileURLToPath } from "node:url";
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const authHome =
   process.env.GRANDE_GOOGLE_DRIVE_AUTH_HOME ??
-  path.join(os.homedir(), ".mcp-auth");
+  path.join(os.userInfo().homedir, ".mcp-auth");
 const upstreamEntry = path.join(
   root,
   "node_modules",

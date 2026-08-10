@@ -1,11 +1,9 @@
 {
   "mcpServers": {
     "google-drive": {
-      "command": "npx",
+      "command": "node",
       "args": [
-        "-y",
-        "--package=github:grandeand/unofficial-google-drive-plugin-for-codex",
-        "grande-google-drive"
+        "server/index.mjs"
       ],
       "default_tools_approval_mode": "writes"
     }

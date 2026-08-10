@@ -1,11 +1,15 @@
 #!/usr/bin/env node
 
+import os from "node:os";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
+const authHome =
+  process.env.GRANDE_GOOGLE_DRIVE_AUTH_HOME ??
+  path.join(os.userInfo().homedir, ".mcp-auth");
 const upstreamEntry = path.join(
   root,
   "node_modules",
@@ -17,7 +21,15 @@ const upstreamEntry = path.join(
 const transport = new StdioClientTransport({
   command: process.execPath,
   args: [upstreamEntry],
-  env: { ...process.env },
+  env: {
+    ...process.env,
+    GOOGLE_DRIVE_OAUTH_CREDENTIALS:
+      process.env.GOOGLE_DRIVE_OAUTH_CREDENTIALS ??
+      path.join(authHome, "google-drive-client.json"),
+    GOOGLE_DRIVE_MCP_TOKEN_PATH:
+      process.env.GOOGLE_DRIVE_MCP_TOKEN_PATH ??
+      path.join(authHome, "google-drive-mcp-tokens.json"),
+  },
   stderr: "inherit",
 });
 const client = new Client(

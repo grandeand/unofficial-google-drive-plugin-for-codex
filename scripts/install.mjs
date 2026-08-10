@@ -7,8 +7,40 @@ import { cp, mkdir, readFile, rm, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 
 const sourceRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
-const targetRoot = path.join(os.homedir(), ".codex", "plugins", "grande-google-drive");
-const marketplacePath = path.join(os.homedir(), ".agents", "plugins", "marketplace.json");
+const codexHome = process.env.HOME || os.homedir();
+const userHome = os.userInfo().homedir;
+const authHome =
+  process.env.GRANDE_GOOGLE_DRIVE_AUTH_HOME ??
+  path.join(userHome, ".mcp-auth");
+const targetRoot = path.join(codexHome, "plugins", "grande-google-drive");
+const marketplacePath = path.join(codexHome, ".agents", "plugins", "marketplace.json");
+
+function cachebuster() {
+  return new Date().toISOString().replace(/[-:TZ.]/g, "").slice(0, 14);
+}
+
+async function updateInstalledVersion() {
+  const manifestPath = path.join(targetRoot, ".codex-plugin", "plugin.json");
+  const manifest = JSON.parse(await readFile(manifestPath, "utf8"));
+  const baseVersion = String(manifest.version).split("+", 1)[0];
+  manifest.version = baseVersion + "+codex." + cachebuster();
+  await writeFile(manifestPath, JSON.stringify(manifest, null, 2) + "\n");
+  return manifest.version;
+}
+
+async function hasTokenStore() {
+  try {
+    const raw = await readFile(
+      process.env.GOOGLE_DRIVE_MCP_TOKEN_PATH ||
+        path.join(authHome, "google-drive-mcp-tokens.json"),
+      "utf8",
+    );
+    const parsed = JSON.parse(raw);
+    return Boolean(parsed?.accounts && Object.keys(parsed.accounts).length);
+  } catch {
+    return false;
+  }
+}
 
 function run(command, args, options = {}) {
   return new Promise((resolve, reject) => {
@@ -35,6 +67,7 @@ if (sourceRoot !== targetRoot) {
 }
 
 await run("npm", ["install", "--omit=dev"], { cwd: targetRoot });
+const installedVersion = await updateInstalledVersion();
 await mkdir(path.dirname(marketplacePath), { recursive: true });
 
 let marketplace = {
@@ -54,7 +87,7 @@ const entry = {
   name: "grande-google-drive",
   source: {
     source: "local",
-    path: "./.codex/plugins/grande-google-drive",
+    path: "./plugins/grande-google-drive",
   },
   policy: {
     installation: "AVAILABLE",
@@ -69,6 +102,14 @@ else marketplace.plugins[index] = entry;
 await writeFile(marketplacePath, JSON.stringify(marketplace, null, 2) + "\n", { mode: 0o600 });
 await run("codex", ["plugin", "add", "grande-google-drive@" + marketplace.name]);
 
-console.log("Grande Google Drive installed. Starting Google OAuth...");
-await run(process.execPath, [path.join(targetRoot, "scripts", "auth.mjs")], { cwd: targetRoot });
-console.log("Installation and Google login completed. Restart Codex to load the plugin.");
+if (!(await hasTokenStore())) {
+  console.log("Grande Google Drive installed. Starting Google OAuth...");
+  await run(process.execPath, [path.join(targetRoot, "scripts", "auth.mjs")], {
+    cwd: targetRoot,
+    env: {
+      ...process.env,
+      GRANDE_GOOGLE_DRIVE_AUTH_HOME: authHome,
+    },
+  });
+}
+console.log("Installed Grande Google Drive " + installedVersion + ". Start a new Codex task to load it.");

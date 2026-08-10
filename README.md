@@ -24,10 +24,10 @@ Codex marketplace, install all Node.js dependencies, and start Google OAuth:
 npx --yes --package=github:grandeand/unofficial-google-drive-plugin-for-codex grande-google-drive-install
 ```
 
-The installer copies the plugin to `~/.codex/plugins/grande-google-drive`, runs
-`npm install --omit=dev`, registers `grande-google-drive` with Codex, and then
-opens the browser for Google sign-in. Restart Codex after the installer
-completes so the new MCP server is loaded.
+The installer copies the plugin into the active Codex profile, installs its
+production dependencies, generates a fresh Codex cachebuster, and reinstalls
+the marketplace snapshot. Existing Google OAuth tokens are preserved. Start a
+new Codex task after each update so the refreshed MCP tools are loaded.
 
 The machine must have Node.js, npm, and the Codex CLI available on `PATH`.
 
