@@ -20,7 +20,7 @@ const upstreamEntry = path.join(
 );
 const transport = new StdioClientTransport({
   command: process.execPath,
-  args: [upstreamEntry],
+  args: [path.join(root, "server", "index.mjs")],
   env: {
     ...process.env,
     GOOGLE_DRIVE_OAUTH_CREDENTIALS:
