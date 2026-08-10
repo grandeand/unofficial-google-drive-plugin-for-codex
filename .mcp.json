@@ -1,10 +1,8 @@
 {
   "mcpServers": {
     "google-drive": {
-      "command": "node",
-      "args": [
-        "server/index.mjs"
-      ],
+      "command": "./server/index.mjs",
+      "args": [],
       "cwd": ".",
       "default_tools_approval_mode": "writes"
     }
