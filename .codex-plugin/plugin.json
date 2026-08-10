@@ -1,0 +1,26 @@
+{
+  "name": "grande-google-drive",
+  "version": "0.2.0",
+  "description": "Grande'nin Google Drive ve Google Sheets işlemleri için yerel MCP eklentisi.",
+  "author": {
+    "name": "Grande"
+  },
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Grande Google Drive",
+    "shortDescription": "Drive ve Sheets'i Codex'ten kullan.",
+    "longDescription": "Grande Google Drive, yerel OAuth hesabınla Google Drive ve Google Sheets dosyalarını arama, okuma ve onaylı düzenleme araçları sağlar.",
+    "developerName": "Grande",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write"
+    ],
+    "defaultPrompt": [
+      "Drive'ımda dosya ara.",
+      "Google Sheets dosyalarımı listele.",
+      "Bu Sheet aralığını güncelle."
+    ]
+  },
+  "mcpServers": "./.mcp.json"
+}
