@@ -15,8 +15,6 @@ const upstreamEntry = path.join(
 );
 
 await access(upstreamEntry);
-if (process.platform !== "win32") {
-  await chmod(path.join(root, "server", "index.mjs"), 0o755);
-}
+if (process.platform !== "win32") await chmod(upstreamEntry, 0o755);
 
 console.error("[Grande Google Drive] Dependencies are ready.");

@@ -1,8 +1,8 @@
 # Unofficial Google Drive Plugin for Codex
 
-An unofficial Codex plugin that connects Google Drive and Google Sheets through a local MCP server.
+An unofficial Codex plugin package that runs the upstream Google Drive MCP server directly.
 
-It wraps the excellent [`@piotr-agier/google-drive-mcp`](https://github.com/piotr-agier/google-drive-mcp) project by Piotr Agier and adds human-readable MCP tool titles so Codex can display names such as **List Google Sheets** instead of collapsing camelCase names into `Listgooglesheets`.
+It installs and launches [`@piotr-agier/google-drive-mcp`](https://github.com/piotr-agier/google-drive-mcp) directly, without an intermediate MCP proxy or tool-schema transformation.
 
 This project is not affiliated with OpenAI, Google, or Piotr Agier.
 

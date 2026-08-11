@@ -1,9 +1,13 @@
 {
   "mcpServers": {
     "google-drive": {
-      "command": "./server/index.mjs",
+      "command": "./node_modules/@piotr-agier/google-drive-mcp/dist/index.js",
       "args": [],
       "cwd": ".",
+      "env": {
+        "GOOGLE_DRIVE_OAUTH_CREDENTIALS": "/Users/samethasturk/.mcp-auth/google-drive-client.json",
+        "GOOGLE_DRIVE_MCP_TOKEN_PATH": "/Users/samethasturk/.mcp-auth/google-drive-mcp-tokens.json"
+      },
       "default_tools_approval_mode": "writes"
     }
   }

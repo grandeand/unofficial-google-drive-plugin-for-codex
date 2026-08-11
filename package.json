@@ -1,12 +1,10 @@
 {
   "name": "unofficial-google-drive-plugin-for-codex",
   "version": "0.1.0",
-  "description": "An unofficial Codex plugin that exposes Google Drive and Google Sheets through a local MCP wrapper.",
+  "description": "A Codex plugin package for the upstream Google Drive MCP server.",
   "license": "MIT",
   "type": "module",
   "bin": {
-    "unofficial-google-drive-plugin-for-codex": "./server/index.mjs",
-    "grande-google-drive": "./server/index.mjs",
     "grande-google-drive-install": "./scripts/install.mjs"
   },
   "scripts": {
@@ -17,6 +15,6 @@
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.30.0",
-    "@piotr-agier/google-drive-mcp": "2.5.0"
+    "@piotr-agier/google-drive-mcp": "github:piotr-agier/google-drive-mcp"
   }
 }
